@@ -25,8 +25,15 @@ fn pooling[
 
     global_i = block_dim.x * block_idx.x + thread_idx.x
     local_i = thread_idx.x
-    # FIX ME IN (roughly 10 lines)
-
+    if global_i < size:
+        shared[local_i] = a[global_i]
+    barrier()
+    if global_i==0:
+        out[0] = shared[0]
+    elif global_i==1:
+        out[1] = shared[0] + shared[1]
+    elif 1 < global_i < size:
+        out[global_i] = shared[local_i] + shared[local_i-1] + shared[local_i - 2]
 
 # ANCHOR_END: pooling_layout_tensor
 

@@ -24,8 +24,15 @@ fn dot_product[
     b: LayoutTensor[mut=True, dtype, in_layout],
     size: Int,
 ):
-    # FILL ME IN (roughly 13 lines)
-    ...
+    shared = tb[dtype]().row_major[TPB]().shared().alloc()
+    global_i = block_idx.x * TPB + thread_idx.x
+    local_i = thread_idx.x
+    if global_i < size:
+        shared[local_i] = a[global_i] * b[global_i]
+    barrier()
+    if local_i==0:
+        for i in range(size):
+            out[0] += shared[i]
 
 
 # ANCHOR_END: dot_product_layout_tensor

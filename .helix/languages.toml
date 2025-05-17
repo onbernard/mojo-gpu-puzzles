@@ -1,0 +1,15 @@
+[language-server.mojo-lsp]
+command   = "mojo-lsp-server"
+# args      = ["--stdio"]
+timeout   = 30                    # max seconds to wait per request
+
+[[language]]
+name             = "mojo"         # unique identifier for the language
+scope            = "source.mojo"  # aligns with your Tree-sitter or TM grammar
+file-types       = ["mojo"]       # files ending in `.mojo`
+# comment-tokens   = "#"            # single-line comments
+language-servers = ["mojo-lsp"]   # links to the [language-server.mojo-lsp] above
+
+[[grammar]]
+name   = "mojo"
+source = { git = "https://github.com/your-org/tree-sitter-mojo", rev = "v0.1.0" }
