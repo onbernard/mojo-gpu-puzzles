@@ -45,8 +45,6 @@ fn single_block_matmul[
     a: LayoutTensor[mut=False, dtype, layout],
     b: LayoutTensor[mut=False, dtype, layout],
 ):
-    row = block_dim.y * block_idx.y + thread_idx.y
-    col = block_dim.x * block_idx.x + thread_idx.x
     local_row = thread_idx.y
     local_col = thread_idx.x
     # FILL ME IN (roughly 12 lines)
@@ -89,7 +87,7 @@ fn matmul_tiled[
     b_shared = tb[dtype]().row_major[TPB, TPB]().shared().alloc()
     var s: out.element_type = 0
     @parameter
-    for tile in range((SIZE + TPB - 1) // TPB):
+    for tile in range((size + TPB - 1) // TPB):
         if local_row < TPB and local_col < TPB:
             a_shared[local_row, local_col] = 0
             b_shared[local_row, local_col] = 0
@@ -110,7 +108,6 @@ fn matmul_tiled[
         barrier()
     if tiled_row < size and tiled_col < size:
         out[tiled_row, tiled_col] = s
-        
 
 
 # ANCHOR_END: matmul_tiled
