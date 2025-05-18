@@ -16,9 +16,10 @@
   {
     devShell = pkgs.mkShell {
       packages = with pkgs; [
-        uv
         cornflake.packages.x86_64-linux.mojo
+        uv
         helix
+        zlib
       ];
       shellHook = ''
         uv sync && source .venv/bin/activate
