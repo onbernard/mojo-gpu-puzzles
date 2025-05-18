@@ -1,15 +1,20 @@
 [language-server.mojo-lsp]
 command   = "mojo-lsp-server"
-# args      = ["--stdio"]
-timeout   = 30                    # max seconds to wait per request
+args      = []
+timeout   = 30
 
 [[language]]
-name             = "mojo"         # unique identifier for the language
-scope            = "source.mojo"  # aligns with your Tree-sitter or TM grammar
-file-types       = ["mojo"]       # files ending in `.mojo`
-# comment-tokens   = "#"            # single-line comments
-language-servers = ["mojo-lsp"]   # links to the [language-server.mojo-lsp] above
+name = "mojo"
+scope = "source.mojo"
+roots = ["__init__.mojo"]
+injection-regex = "mojo"
+file-types = ["mojo", "🔥"]
+language-servers = [ "mojo-lsp" ]
+comment-token = "#"
+indent = { tab-width = 4, unit = "    " }
+auto-format = true
+formatter = { command = "mojo", args = ["format", "-q", "-"]}
 
 [[grammar]]
-name   = "mojo"
-source = { git = "https://github.com/your-org/tree-sitter-mojo", rev = "v0.1.0" }
+name = "mojo"
+source = { git = "https://github.com/lsh/tree-sitter-mojo", rev = "3d7c53b8038f9ebbb57cd2e61296180aa5c1cf64" }
